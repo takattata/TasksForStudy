@@ -7,6 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.takasy.tasksforstudy.R
 import com.takasy.tasksforstudy.databinding.MainFragmentBinding
 
@@ -33,6 +37,13 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.addButton.setOnClickListener {
             println("!!! addButton.setOnClickListener")
+        }
+        viewModel.fetchContents().observe(viewLifecycleOwner) { list ->
+            binding.recyclerView.adapter = ContentsAdapter(list)
+            binding.recyclerView.layoutManager = FlexboxLayoutManager(requireContext()).also {
+                it.flexDirection = FlexDirection.ROW
+                it.justifyContent = JustifyContent.CENTER
+            }
         }
     }
 
