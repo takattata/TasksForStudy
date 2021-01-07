@@ -11,10 +11,10 @@ class ContentsAdapter(
 ): RecyclerView.Adapter<ContentsAdapter.ContentHolder>() {
 
     data class Content(
-        private val name: String,
-        private val imageColor: Color
+        val name: String,
+        val imageColor: Color
     ) {
-        enum class Color(private val imageId: Int) {
+        enum class Color(val imageId: Int) {
             ORANGE(R.drawable.img_content_android_orange),
             BLUE(R.drawable.img_content_android_blue),
         }
@@ -30,11 +30,9 @@ class ContentsAdapter(
         )
 
     override fun onBindViewHolder(holder: ContentHolder, position: Int) {
-        holder.binding.name.text = "Name $position"
-        holder.binding.image.setImageResource(
-            if (position % 2 == 0) R.drawable.img_content_android_blue
-            else R.drawable.img_content_android_orange
-        )
+        val content = list[position]
+        holder.binding.name.text = content.name
+        holder.binding.image.setImageResource(content.imageColor.imageId)
     }
 
     override fun getItemCount() = list.size
