@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.takasy.tasksforstudy.databinding.ContentHolderBinding
 import com.takasy.tasksforstudy.databinding.MainFragmentBinding
 
 class MainFragment : Fragment() {
@@ -32,16 +33,32 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.addButton.setOnClickListener {
-            println("!!! addButton.setOnClickListener")
-        }
         viewModel.fetchContents().observe(viewLifecycleOwner) { list ->
-            binding.recyclerView.adapter = ContentsAdapter(list)
-            binding.recyclerView.layoutManager = FlexboxLayoutManager(requireContext()).also {
-                it.flexDirection = FlexDirection.ROW
-                it.justifyContent = JustifyContent.CENTER
-            }
+            setupRecyclerView(list)
+            setupFlow(list)
         }
+    }
+
+    private fun setupRecyclerView(list: List<ContentsAdapter.Content>) {
+        binding.recyclerView.adapter = ContentsAdapter(list)
+        binding.recyclerView.layoutManager = FlexboxLayoutManager(requireContext()).also {
+            it.flexDirection = FlexDirection.ROW
+            it.justifyContent = JustifyContent.CENTER
+        }
+    }
+
+    private fun setupFlow(list: List<ContentsAdapter.Content>) {
+        val contentIds = mutableListOf<Int>()
+        list.forEach { content ->
+            val holder = ContentHolderBinding.inflate(LayoutInflater.from(requireContext()))
+            holder.name.text = content.name
+            holder.image.setImageResource(content.imageColor.imageId)
+
+            holder.root.id = View.generateViewId()
+            contentIds.add(holder.root.id)
+            binding.root.addView(holder.root)
+        }
+        binding.flowContainer.referencedIds = contentIds.toIntArray()
     }
 
     override fun onDestroyView() {
