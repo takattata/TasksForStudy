@@ -40,7 +40,6 @@ class MainFragment : Fragment() {
             binding.recyclerView.layoutManager = FlexboxLayoutManager(requireContext()).also {
                 it.flexDirection = FlexDirection.ROW
                 it.justifyContent = JustifyContent.CENTER
-                it.maxLine = 2
             }
         }
     }
