@@ -1,17 +1,14 @@
 package com.takasy.tasksforstudy.ui.main
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.takasy.tasksforstudy.R
 import com.takasy.tasksforstudy.databinding.MainFragmentBinding
 
 class MainFragment : Fragment() {
@@ -43,6 +40,7 @@ class MainFragment : Fragment() {
             binding.recyclerView.layoutManager = FlexboxLayoutManager(requireContext()).also {
                 it.flexDirection = FlexDirection.ROW
                 it.justifyContent = JustifyContent.CENTER
+                it.maxLine = 2
             }
         }
     }
